@@ -5,7 +5,6 @@ ARG HANDLER
 COPY ./${BUILD_DIR}/go.mod ./
 COPY ./${BUILD_DIR}/go.sum ./
 COPY ./${BUILD_DIR}/${HANDLER} ./
-RUN go mod download
 RUN go mod tidy
 RUN GOOS=linux GOARCH=amd64 go build -C ./ -tags lambda.norpc -o /app/main ${HANDLER}
 
