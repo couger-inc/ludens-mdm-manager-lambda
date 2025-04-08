@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/aws/aws-lambda-go v1.47.0
-	github.com/couger-inc/ludens-mdm-go v1.0.0
+	github.com/couger-inc/ludens-mdm-go v0.0.1
 )
 
 require (
