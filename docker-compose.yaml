@@ -1,0 +1,27 @@
+services:
+  stores-manager-delete-lambda:
+    build:
+      context: .
+      args:
+        - BUILD_DIR=delete-store-managers-lambda
+        - HANDLER=main.go
+    container_name: delete-lambda-rie
+    platform: linux/amd64
+    volumes:
+      - ~/.aws-lambda-rie:/aws-lambda
+    ports:
+      - "9000:8080"
+    entrypoint: ["/aws-lambda/aws-lambda-rie"]
+    command: ["./main"]
+    env_file: ".env"
+    networks:
+      - container-link
+    deploy:
+      resources:
+        limits:
+          # If you experience any errors such as Chrome crashing or not being available you might need to increase the storage available to your Lambda Function.
+          memory: 4096M
+networks:
+  container-link:
+    name: ludens-network # ludens-user-console と共通のネットワーク
+    external: true
