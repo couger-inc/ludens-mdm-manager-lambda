@@ -31,7 +31,7 @@ import (
 // 	return err
 // }
 
-func handler(ctx context.Context, event events.APIGatewayProxyRequest) events.APIGatewayProxyResponse {
+func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// var request openapi.GetManagersAndStoresParams
 	// convertRequest(event, &request)
 	// skip, err := strconv.Atoi(*request.Offset)
@@ -79,7 +79,7 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) events.AP
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Body: string(jsonBody),
-	}
+	}, nil
 }
 
 func main() {
