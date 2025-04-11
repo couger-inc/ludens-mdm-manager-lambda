@@ -1,12 +1,7 @@
-FROM golang:1.24.0 AS builder
-WORKDIR /app
-ARG BUILD_DIR
-ARG HANDLER
-COPY ./${BUILD_DIR}/go.mod ./
-COPY ./${BUILD_DIR}/${HANDLER} ./
-RUN go mod tidy
-RUN GOOS=linux GOARCH=amd64 go build -C ./ -tags lambda.norpc -o /app/main -ldflags="-s -w" ${HANDLER}
-
-FROM public.ecr.aws/lambda/provided:al2023
-COPY --from=builder /app/main ./main
-ENTRYPOINT [ "./main" ]
+FROM public.ecr.aws/docker/library/golang:1.24.2 AS build-image
+WORKDIR /src
+COPY ./get-managers-lambda/go.mod ./get-managers-lambda/go.sum ./get-managers-lambda/main.go ./
+RUN go build -o lambda-handler
+FROM public.ecr.aws/lambda/provided:al2
+COPY --from=build-image /src/lambda-handler .
+ENTRYPOINT ["./lambda-handler"]
